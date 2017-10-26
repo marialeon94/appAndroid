@@ -97,8 +97,13 @@
         android:layout_below="@+id/button"
         android:layout_centerHorizontal="true" />
 
+        <TextView
+            android:text="Olvidé mi contraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/olvideContraseña" />
 
 
-</LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

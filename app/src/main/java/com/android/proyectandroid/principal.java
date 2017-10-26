@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -31,17 +32,21 @@ public class principal extends AppCompatActivity {
     private EditText mailLogin;
     private EditText passLogin;
     private String users="";
+    private TextView olvidaContras;
     CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+        olvidaContras= (TextView) findViewById(R.id.olvideContraseña);
+
         // Obtengo la instancia de firebase
         mAuth = FirebaseAuth.getInstance();
         //inicializo los campos de texto para ingresar email y password
         mailLogin=(EditText) findViewById(R.id.mailLogin);
         passLogin=(EditText) findViewById(R.id.passLogin);
+        //Hago uso de los metodos expuestos por facebook para el login
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create();
@@ -49,7 +54,10 @@ public class principal extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                System.out.print("jaja");
+                //si el login con facebook fue correcto, entonces abro la pantalla principal
+                Intent intent= new Intent(getApplicationContext(), principalCreacion.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
 
             @Override
@@ -59,7 +67,16 @@ public class principal extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
+                Toast.makeText(getApplicationContext(), error.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
 
+        olvidaContras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent inte= new Intent(getApplicationContext(), ReestablecimientoContrasena.class);
+                inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(inte);
             }
         });
     }
@@ -78,6 +95,7 @@ public class principal extends AppCompatActivity {
      */
     public void irAregistro(View v){
         Intent intent = new Intent(this, Registro.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
